@@ -4,3 +4,6 @@ author: "Brooke Helmick"
 format: html
 editor: visual
 ---
+
+These are all the materials from the coreR course (October 2024)
+
