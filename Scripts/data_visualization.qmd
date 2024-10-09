@@ -1,0 +1,155 @@
+---
+title: "Intro to Data Visualization"
+author: "Brooke Helmick"
+format: html
+---
+
+## Set Up 
+
+```{r}
+#| message: false 
+#| warning: false 
+
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(forcats) # makes working with factors easier
+library(ggplot2)
+library(leaflet) # interactive maps
+library(DT) # interactive tables
+library(scales) # scale functions for visualization
+library(janitor) # expedite cleaning and exploring data
+library(viridis) # colorblind friendly color palette
+```
+
+## Read Data 
+```{r}
+#| warning: false 
+#| message: false 
+delta_visits_raw <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=edi.587.1&entityid=cda8c1384af0089b506d51ad8507641f")
+```
+
+## Data Exploration
+```{r}
+#| eval: false 
+colnames(delta_visits_raw)
+glimpse(delta_visits_raw)
+unique(delta_visits_raw$Date)
+```
+
+## Getting Data Ready For Visualization - Cleaning 
+
+```{r}
+delta_visits <- delta_visits_raw %>% 
+  janitor::clean_names()
+
+colnames(delta_visits)
+```
+
+## Transforming Data from Wide to Long 
+
+```{r}
+visits_long <- delta_visits %>%
+  pivot_longer(cols = c(sm_boat, med_boat, lrg_boat, bank_angler, scientist, cars), 
+               names_to = "visitor_type", 
+               values_to = "quantity") %>%
+  rename(restore_loc = eco_restore_approximate_location) %>%
+  select(-notes)
+```
+
+## Calculate the daily visits to restoration locations
+
+```{r}
+daily_visits_loc <- visits_long %>%
+    group_by(restore_loc, date, visitor_type) %>% 
+    summarise(daily_visits = sum(quantity))
+    
+head(daily_visits_loc)
+```
+
+## Plotting with 'ggplot2'
+
+```{r}
+ggplot(data = daily_visits_loc, 
+       aes(x = restore_loc, 
+           y = daily_visits))+
+  geom_col()
+```
+
+## Customing out plot 
+```{r}
+ggplot(data = daily_visits_loc,
+       aes(x = restore_loc, y = daily_visits,
+           fill = visitor_type))+
+    geom_col(fill = 'blue')
+```
+
+## Filling bars by visitor type 
+
+```{r}
+ggplot(data = daily_visits_loc, 
+       aes(x = restore_loc, y = daily_visits, 
+           fill = visitor_type))+
+  geom_col()
+```
+
+- use the 'labs()' to modify labels 
+- flip the x and y axis 
+- modify the theme 
+
+```{r}
+ggplot(data = daily_visits_loc, 
+       aes(x = restore_loc, y = daily_visits, 
+           fill = visitor_type))+ 
+  geom_col()+
+  labs(x = "Restoration Location", 
+       y = "Number of Visits", 
+       fill = "Type of Visitor", 
+       title = "Total Number of Visits to Delta Restoration Areas by visitor type", 
+       subtitle = "Sum of all visits during July 2017 to March 2018")+ 
+  coord_flip()+ 
+  theme_get()+
+  theme(legend.position = "bottom", 
+        axis.ticks.y = element_blank())+ 
+  scale_y_continuous(breaks = seq(0, 120, 10), 
+                     expand = c(0, 0))
+    
+```
+
+## Reorder how the restoration locations are ordered 
+
+```{r}
+daily_visits_total <- daily_visits_loc %>%
+  group_by(restore_loc) %>%
+  mutate(n = sum(daily_visits)) %>% 
+  ungroup()
+```
+
+```{r}
+ggplot(data = daily_visits_total, 
+       aes(x = fct_reorder(restore_loc, n), 
+           y = daily_visits, 
+           fill = visitor_type))+ 
+  geom_col()+
+  labs(x = "Restoration Location", 
+       y = "Number of Visits", 
+       fill = "Type of Visitor", 
+       title = "Total Number of Visits to Delta Restoration Areas by visitor type", 
+       subtitle = "Sum of all visits during July 2017 to March 2018")+ 
+  coord_flip()+ 
+  theme_get()+
+  theme(legend.position = "bottom", 
+        axis.ticks.y = element_blank())+ 
+  scale_y_continuous(breaks = seq(0, 120, 10), 
+                     expand = c(0, 0))+ 
+  scale_fill_viridis_d()+
+  guides(fill = guide_legend(reverse=TRUE))
+```
+
+```{r}
+ggsave("Scripts/plots/visits_restore_sire_delts.jpg", width = 12, height = 6, units = "in")
+```
+
+
+
