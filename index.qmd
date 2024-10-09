@@ -7,3 +7,13 @@ editor: visual
 
 These are all the materials from the coreR course (October 2024)
 
+## Course Lessons 
+- [Intro to Literate Analysis](Scripts/quarto_intro.html)
+- [Cleaning and Wrangling Data](Scripts/cleaning_and_wrangling.html)
+- Data Visualization
+- Functions 
+
+## Practice Sessions 
+- Practice I
+- Practice II
+- Practice III

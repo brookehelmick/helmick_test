@@ -1,0 +1,78 @@
+---
+title: "Intro to Quarto"
+author: "Brooke Helmick"
+format: html
+editor: visual
+execute: 
+  warning: false
+  message: false 
+bibliography: references.bib
+---
+
+# Level 1 header
+
+this is regular plain old boring text
+
+## Level 2 header
+
+-   blank line between sections
+
+-   doesn't always make a difference but sometimes it does
+
+-   bullet item 2
+
+-   3 etc
+
+-   item 4 list
+
+    -   used tab in visual editor
+
+1.  numbered list
+2.  item 2
+
+here is some more plain text. But if I want *italics* or *italics* \*\* or \_x \_
+
+**bold** two asterisks or \_\_bold \_\_
+
+***bold = three italics***
+
+back to normal text – important to note that you cannot use syntax in visual editor
+
+Create a code chunk:
+
+```{r important r code}
+
+```
+
+| Col1    | Col2 | Col3 |
+|---------|------|------|
+| thing 1 | 1    |      |
+| thing 2 | 2    |      |
+| thing 3 | 3    |      |
+| thing 4 | 4    |      |
+| thing 5 | 5    |      |
+
+```{x <- 1 + 2}
+```
+
+table 1
+
+here is a citation [@oke2020] – runs like zotero bibtech is a language for citation management
+
+```{r important code 2}
+x <- 1 + 2
+```
+
+My important result is `r x` (this is an in-line code chunk_ or another important thing is `r 6 * 7`)
+
+if you want text to look like code: `this is code formatted`
+
+```{r}
+
+x <- 4 * 8 
+
+height_ft <- c(5.2, 6.0, 5.7)
+
+coef <- 3.14
+```
+
