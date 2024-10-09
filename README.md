@@ -9,5 +9,4 @@ here is the version for my local computer. Isn't that great ??
 I'm going to type my additions here
 
 
-i'm making edits knowing this won't work 
-
+Fixing line 12 to fix BOTH merge issues :)
