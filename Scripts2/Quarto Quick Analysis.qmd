@@ -1,0 +1,85 @@
+---
+title: "Quick Analysis"
+author: "Brooke Helmick"
+format: html
+editor: visual
+execute: 
+  warning: false 
+  message: false 
+---
+
+# Introduction
+
+## About the data
+
+The data for this analysis was downloaded from the Artctic Data Center on 10/7/2024: [Arctic Data Center](https://arcticdata.io/catalog/view/doi:10.18739/A25T3FZ8X)
+
+## Set up
+
+Attach important packages. 
+
+```{r}
+library(readr)
+library(here)
+```
+
+## Read in the data
+
+```{r}
+#| message: false 
+#| warning: false
+bg_chem <- read_csv(here('data', 'BGchem2008data.csv'))
+```
+
+# Analysis
+
+## Calculate summary statistics
+
+```{r}
+#| eval: false 
+#| include: false 
+
+# print the columnnames 
+colnames(bg_chem)
+
+# get the general structure 
+str(bg_chem)
+
+# First six lines 
+head(bg_chem)
+
+# get a summary of all columns 
+summary(bg_chem)
+
+# unique values of a column 
+unique(bg_chem$date)
+
+```
+
+Calculate the summary statistics (means) for nitrate, nitrite, ammonia, and phosphate. 
+
+```{r}
+nitrate <- mean(bg_chem$NO3)
+nitrite <- mean(bg_chem$NO2)
+amm <- mean(bg_chem$NH4)
+phos <- mean(bg_chem$P)
+```
+
+## Calculate the mean Redfield ratio
+
+Ratio of nitrogen (nitrate, nitrite, amm) to phos, i.e. nutrient availability in a body of water
+
+```{r}
+ratio2 <- (nitrate + nitrite + amm) / phos
+```
+
+The Redfield ratio for this data set is approximately `r round(ratio2)`
+
+## Plot Redfield ratio
+
+```{r}
+plot(bg_chem$P, bg_chem$NO2 + bg_chem$NO3 + bg_chem$NH4)
+```
+
+
+# Conclusion
