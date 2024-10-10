@@ -1,0 +1,94 @@
+---
+title: "Practice: Functions"
+author: "Brooke Helmick"
+format: html
+---
+
+## Set Up 
+
+```{r}
+library(janitor)
+library(here)
+library(dplyr)
+library(ggplot2)
+```
+
+## Creating Function: Double It
+
+```{r}
+data <- c(5, 10, 15, 20, 25)
+
+double_it <- function(x) {
+  return(2*x)
+}
+```
+
+## Testing 
+
+```{r}
+double_it(data)
+
+double_it(data^2)
+
+double_it(7)
+```
+
+## New Vector Using Function 
+
+```{r}
+data_doubled <- double_it(data)
+```
+
+## Exlaim Age Function + Test 
+
+```{r}
+age <- c(5, 10, 18, 30, 50)
+
+exclaim_age <- function(age) { 
+  return(paste("I am", age, "years old!"))
+}
+
+exclaim_age(age)
+```
+
+## Functions with Conditions + Test 
+
+```{r}
+# find_max() function # 
+
+find_max <- function(value_1, value_2) {
+  if(value_1 > value_2) { 
+    return(value_1)
+  }
+  else if (value_2 > value_1) {
+    return(value_2)
+  }
+  else if(value_1 == value_2) {
+    return("Values Equal")
+  }
+}
+
+# test # 
+
+a <- 5
+b <- -7
+
+find_max(a, b)
+
+find_max(4, 4)
+
+find_max(4, "cow")
+```
+
+```{r}
+# find_max() test with larger sets # 
+
+find_max <- function() {
+      return("max")
+}
+
+find_max(data)
+```
+```
+
+
